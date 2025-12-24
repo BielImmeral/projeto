@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1>{{ friend.name }}</h1>
+
+    {% for text in texts %}
+    <div class="card-text">
+        {% if text.is_locked and not text.unlocked %}
+            <div class="blurred">
+                <!-- TROUXA KKKKKKK Se tentou me conta kkkk -->
+                <span>&nbsp;</span>
+            </div>
+            <form method="post" action="{% url 'unlock_text' text.id %}">
+                {% csrf_token %}
+                <input type="text" name="password" placeholder="DD/MM/AAAA" required>
+                <button type="submit">Desbloquear</button>
+            </form>
+            <p><small>{{ text.password_hint }}</small></p>
+        {% else %}
+            <p>{{ text.content|linebreaks }}</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock %}
